@@ -9,9 +9,21 @@ const authController = require('./controllers/authController');
 const productController = require('./controllers/productController');
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: '*', // Allow all for debugging, specific domains in prod recommended
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Debug Middleware
+app.use((req, res, next) => {
+    console.log(`[REQUEST] ${req.method} ${req.originalUrl}`);
+    console.log('Body:', JSON.stringify(req.body, null, 2));
+    next();
+});
 
 // Routes
 const router = express.Router();
