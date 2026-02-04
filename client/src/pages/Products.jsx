@@ -4,6 +4,7 @@ import AddProductModal from '../components/AddProductModal';
 import ProductCard from '../components/ProductCard';
 import Header from '../components/Header';
 import Toast from '../components/Toast';
+import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 
 const Products = () => {
     const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
