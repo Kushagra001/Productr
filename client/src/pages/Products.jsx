@@ -6,6 +6,8 @@ import Header from '../components/Header';
 import Toast from '../components/Toast';
 
 const Products = () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
     const [showModal, setShowModal] = useState(false);
     const [products, setProducts] = useState([]);
     const [toastMsg, setToastMsg] = useState('');
@@ -14,7 +16,7 @@ const Products = () => {
 
     const fetchProducts = async () => {
         try {
-            const res = await axios.get('http://localhost:5000/api/products');
+            const res = await axios.get(`${API_URL}/api/products`);
             setProducts(res.data);
         } catch (err) {
             console.error(err);
@@ -32,7 +34,7 @@ const Products = () => {
 
     const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/products/${id}`);
+            await axios.delete(`${API_URL}/api/products/${id}`);
             fetchProducts();
             setProductToDelete(null);
             setToastMsg("Product Deleted Successfully");
@@ -49,7 +51,7 @@ const Products = () => {
 
     const handleUpdate = async (id, data) => {
         try {
-            await axios.put(`http://localhost:5000/api/products/${id}`, data);
+            await axios.put(`${API_URL}/api/products/${id}`, data);
             fetchProducts();
         } catch (err) {
             console.error(err);

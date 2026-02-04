@@ -84,11 +84,12 @@ const AddProductModal = ({ onClose, onProductSaved, initialData = null }) => {
     const handleSubmit = async () => {
         if (!validate()) return;
 
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         setLoading(true);
         try {
             const url = initialData
-                ? `http://localhost:5000/api/products/${initialData._id}`
-                : 'http://localhost:5000/api/products';
+                ? `${API_URL}/api/products/${initialData._id}`
+                : `${API_URL}/api/products`;
 
             const method = initialData ? 'put' : 'post';
 
