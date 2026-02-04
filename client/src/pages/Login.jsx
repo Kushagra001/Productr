@@ -46,11 +46,21 @@ const Login = () => {
 
       try {
          // Render Free Tier can take 60s+ to wake up
-         await axios.post(endpoint, { email }, { timeout: 60000 });
-         console.log('[LOGIN] OTP Request Successful');
+         const res = await axios.post(endpoint, { email }, { timeout: 60000 });
+         console.log('[LOGIN] OTP Request Successful', res.data);
+
          setStep('otp');
          setTimer(60);
-         setOtp(['', '', '', '', '', '']);
+
+         // DEV MODE: Auto-fill OTP if server sends it
+         if (res.data.otp) {
+            const devOtp = res.data.otp.toString();
+            alert(`DEV MODE: Your OTP is ${devOtp}`);
+            setOtp(devOtp.split(''));
+         } else {
+            setOtp(['', '', '', '', '', '']);
+         }
+
       } catch (err) {
          console.error('[LOGIN] Error:', err);
 

@@ -27,11 +27,16 @@ exports.login = async (req, res) => {
         await user.save();
         console.log(`[AUTH] OTP saved to DB. Sending email...`);
 
-        // Send Email
-        await sendEmail(email, 'Your Productr OTP', `Your OTP for login is: ${otp}`);
-        console.log(`[AUTH] Email process completed.`);
+        // Send Email (Non-blocking / Fail-safe)
+        try {
+            await sendEmail(email, 'Your Productr OTP', `Your OTP for login is: ${otp}`);
+            console.log(`[AUTH] Email process completed.`);
+        } catch (emailError) {
+            console.error(`[AUTH] Email failed (Dev Mode Active):`, emailError.message);
+        }
 
-        res.json({ message: 'OTP sent successfully' });
+        // Return OTP in response for Dev Mode
+        res.json({ message: 'OTP generated', otp });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -55,10 +60,15 @@ exports.signup = async (req, res) => {
         };
         await user.save();
 
-        // Send Email
-        await sendEmail(email, 'Welcome to Productr!', `Welcome! Your verification OTP is: ${otp}`);
+        // Send Email (Non-blocking / Fail-safe)
+        try {
+            await sendEmail(email, 'Welcome to Productr!', `Welcome! Your verification OTP is: ${otp}`);
+        } catch (emailError) {
+            console.error(`[AUTH] Email failed (Dev Mode Active):`, emailError.message);
+        }
 
-        res.json({ message: 'OTP sent successfully' });
+        // Return OTP for Dev Mode
+        res.json({ message: 'OTP generated', otp });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
