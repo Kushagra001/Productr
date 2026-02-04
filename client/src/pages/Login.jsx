@@ -45,16 +45,25 @@ const Login = () => {
       console.log(`[LOGIN] Sending request to ${endpoint} with email: ${email}`);
 
       try {
-         await axios.post(endpoint, { email }, { timeout: 15000 }); // 15s timeout
+         // Render Free Tier can take 60s+ to wake up
+         await axios.post(endpoint, { email }, { timeout: 60000 });
          console.log('[LOGIN] OTP Request Successful');
          setStep('otp');
          setTimer(60);
          setOtp(['', '', '', '', '', '']);
       } catch (err) {
          console.error('[LOGIN] Error:', err);
-         const msg = err.response?.data?.error
-            || (err.code === 'ERR_NETWORK' ? 'Network Error - Check Server URL' : err.message)
-            || 'Failed to request OTP';
+
+         let msg = err.response?.data?.error;
+         if (!msg) {
+            if (err.code === 'ECONNABORTED') {
+               msg = "Server is waking up (may take 1 min). Please try again.";
+            } else if (err.code === 'ERR_NETWORK') {
+               msg = "Network Error - Server might be down or waking up.";
+            } else {
+               msg = err.message || 'Failed to request OTP';
+            }
+         }
          setError(msg);
       } finally {
          setLoading(false);
@@ -90,7 +99,7 @@ const Login = () => {
       setLoading(true);
       setError('');
       try {
-         const res = await axios.post(`${API_URL}/api/auth/verify`, { email, otp: code }, { timeout: 15000 });
+         const res = await axios.post(`${API_URL}/api/auth/verify`, { email, otp: code }, { timeout: 60000 });
          console.log('[LOGIN] Verification Successful', res.data);
          localStorage.setItem('user', JSON.stringify(res.data.user));
          localStorage.setItem('token', res.data.userId);

@@ -9,12 +9,19 @@ const sendEmail = async (to, subject, text) => {
     }
 
     try {
+        console.log(`[EMAIL] Attempting to send to ${to}...`);
+
         const transporter = nodemailer.createTransport({
-            service: 'gmail', // easy preset for gmail
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // true for 465, false for other ports
             auth: {
                 user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASS, // App Password, not login password
+                pass: process.env.SMTP_PASS,
             },
+            connectionTimeout: 10000,
+            greetingTimeout: 5000,
+            socketTimeout: 20000,
         });
 
         await transporter.sendMail({

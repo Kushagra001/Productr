@@ -10,20 +10,26 @@ exports.login = async (req, res) => {
     if (!email) return res.status(400).json({ error: 'Email is required' });
 
     try {
+        console.log(`[AUTH] Login attempt for: ${email}`);
         const user = await User.findOne({ email });
+
         if (!user) {
+            console.log(`[AUTH] User not found: ${email}`);
             return res.status(404).json({ error: 'User not found. Please Sign Up.' });
         }
 
+        console.log(`[AUTH] User found. Generating OTP...`);
         const otp = generateOTP();
         user.otp = {
             code: otp,
             expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 mins
         };
         await user.save();
+        console.log(`[AUTH] OTP saved to DB. Sending email...`);
 
         // Send Email
         await sendEmail(email, 'Your Productr OTP', `Your OTP for login is: ${otp}`);
+        console.log(`[AUTH] Email process completed.`);
 
         res.json({ message: 'OTP sent successfully' });
     } catch (error) {
