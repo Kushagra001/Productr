@@ -5,6 +5,8 @@ import runnerImg from '../assets/runner.jpg';
 import bgImg from '../assets/background.png';
 
 const Login = () => {
+   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
    // 'email' or 'otp'
    const [step, setStep] = useState('email');
    const [email, setEmail] = useState('');
@@ -37,8 +39,8 @@ const Login = () => {
       setError('');
 
       const endpoint = isSignup
-         ? 'http://localhost:5000/api/auth/signup'
-         : 'http://localhost:5000/api/auth/login';
+         ? `${API_URL}/api/auth/signup`
+         : `${API_URL}/api/auth/login`;
 
       try {
          await axios.post(endpoint, { email });
@@ -81,7 +83,7 @@ const Login = () => {
       setLoading(true);
       setError('');
       try {
-         const res = await axios.post('http://localhost:5000/api/auth/verify', { email, otp: code });
+         const res = await axios.post(`${API_URL}/api/auth/verify`, { email, otp: code });
          localStorage.setItem('user', JSON.stringify(res.data.user));
          localStorage.setItem('token', res.data.userId);
          navigate('/');
@@ -96,8 +98,8 @@ const Login = () => {
       if (timer === 0) {
          try {
             const endpoint = isSignup
-               ? 'http://localhost:5000/api/auth/signup'
-               : 'http://localhost:5000/api/auth/login';
+               ? `${API_URL}/api/auth/signup`
+               : `${API_URL}/api/auth/login`;
             await axios.post(endpoint, { email });
             setTimer(60);
             setError('');
