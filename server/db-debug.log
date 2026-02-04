@@ -1,0 +1,23 @@
+[2026-02-04T13:28:34.158Z] Connection Error: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+Stack: MongooseServerSelectionError: connect ECONNREFUSED ::1:27017, connect ECONNREFUSED 127.0.0.1:27017
+    at _handleConnectionErrors (C:\Users\kusha\OneDrive\Desktop\New folder\server\node_modules\mongoose\lib\connection.js:1169:11)
+    at NativeConnection.openUri (C:\Users\kusha\OneDrive\Desktop\New folder\server\node_modules\mongoose\lib\connection.js:1100:11)
+    at async connectDB (C:\Users\kusha\OneDrive\Desktop\New folder\server\index.js:37:9)
+[2026-02-04T13:35:39.476Z] Connected successfully
+[2026-02-04T14:43:49.808Z] Connected successfully
+[2026-02-04T14:49:56.550Z] Connected successfully
+[2026-02-04T14:56:59.157Z] Connected successfully
+[2026-02-04T14:58:08.192Z] Connection Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+Stack: Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)
+[2026-02-04T15:03:49.216Z] Connection Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+Stack: Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)
+[2026-02-04T15:13:35.598Z] Connection Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+Stack: Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)
+[2026-02-04T16:03:27.577Z] Connection Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+Stack: Error: querySrv ENOTFOUND _mongodb._tcp.cluster0.puvy9.mongodb.net
+    at QueryReqWrap.onresolve [as oncomplete] (node:internal/dns/promises:291:17)
+[2026-02-04T16:08:36.823Z] Connected successfully
+[2026-02-04T16:34:49.036Z] Connected successfully
