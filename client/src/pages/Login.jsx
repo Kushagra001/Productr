@@ -42,13 +42,20 @@ const Login = () => {
          ? `${API_URL}/api/auth/signup`
          : `${API_URL}/api/auth/login`;
 
+      console.log(`[LOGIN] Sending request to ${endpoint} with email: ${email}`);
+
       try {
-         await axios.post(endpoint, { email });
+         await axios.post(endpoint, { email }, { timeout: 15000 }); // 15s timeout
+         console.log('[LOGIN] OTP Request Successful');
          setStep('otp');
          setTimer(60);
          setOtp(['', '', '', '', '', '']);
       } catch (err) {
-         setError(err.response?.data?.error || 'Failed to request OTP');
+         console.error('[LOGIN] Error:', err);
+         const msg = err.response?.data?.error
+            || (err.code === 'ERR_NETWORK' ? 'Network Error - Check Server URL' : err.message)
+            || 'Failed to request OTP';
+         setError(msg);
       } finally {
          setLoading(false);
       }
@@ -83,12 +90,15 @@ const Login = () => {
       setLoading(true);
       setError('');
       try {
-         const res = await axios.post(`${API_URL}/api/auth/verify`, { email, otp: code });
+         const res = await axios.post(`${API_URL}/api/auth/verify`, { email, otp: code }, { timeout: 15000 });
+         console.log('[LOGIN] Verification Successful', res.data);
          localStorage.setItem('user', JSON.stringify(res.data.user));
          localStorage.setItem('token', res.data.userId);
          navigate('/');
       } catch (err) {
-         setError(err.response?.data?.error || 'Invalid OTP');
+         console.error('[LOGIN] Verify Error:', err);
+         const msg = err.response?.data?.error || err.message || 'Invalid OTP';
+         setError(msg);
       } finally {
          setLoading(false);
       }
@@ -104,6 +114,7 @@ const Login = () => {
             setTimer(60);
             setError('');
          } catch (err) {
+            console.error('[LOGIN] Resend Error:', err);
             setError('Failed to resend OTP');
          }
       }
